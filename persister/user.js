@@ -11,11 +11,13 @@ var userModel = function () {
     password: String,
     email: String,
     gender: String,
-    address: String
+    address: String,
+    registeredOn: String,
+    signupIp: String
   });
  
 
-  return mongoose.model('User', userSchema);
+  return mongoose.model('admin-user', userSchema);
 };
 
 module.exports = new userModel();

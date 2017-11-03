@@ -1,6 +1,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../persister/user');
 var bcrypt = require('bcrypt-nodejs');
+var global = require('../persister/global');
 
 module.exports = function(passport){
 	passport.use('login', new LocalStrategy({
@@ -28,6 +29,7 @@ module.exports = function(passport){
 	        }
 	        // User and password both match, return user from 
 	        // done method which will be treated like success
+	        global.username = username;
 	        return done(null, user);
 	      }
 	    );
@@ -37,6 +39,7 @@ module.exports = function(passport){
 	    passReqToCallback : true
 	  },
 	  function(req, username, password, done) {
+	  	
 	    findOrCreateUser = function(){
 	      // find a user in Mongo with provided username
 	      User.findOne({'username':username},function(err, user) {
@@ -60,6 +63,8 @@ module.exports = function(passport){
 	          newUser.email = req.param('email');
 	          newUser.firstName = req.param('firstName');
 	          newUser.lastName = req.param('lastName');
+          	  newUser.signupIp = global.public_ip;
+	          newUser.registeredOn = getRegisteredOn();
 	 
 	          // save the user
 	          newUser.save(function(err) {
@@ -90,7 +95,10 @@ module.exports = function(passport){
 	});
 }	
 
-
+var getRegisteredOn = function() {
+    var datetime = new Date();
+	return datetime.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+}
 
 var isValidPassword = function(user, password){
   return bcrypt.compareSync(password, user.password);

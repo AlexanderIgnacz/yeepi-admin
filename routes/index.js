@@ -1,14 +1,16 @@
 var Bbs = require('../persister/bbs');
+const requestIp = require('request-ip');
+var global = require('../persister/global');
 
 module.exports = function(app, passport){
 	
 	 /* GET home page. */
 	app.get('/',isAuthenticated, function(req, res) {
-	   res.redirect('/readme');
+	   res.redirect('/dashboard');
 	});
 
 	app.post('/login', passport.authenticate('login', {
-		successRedirect: '/readme',
+		successRedirect: '/dashboard',
 		failureRedirect: '/login',
 		failureFlash : true 
 	}));
@@ -23,7 +25,9 @@ module.exports = function(app, passport){
 	});
 	
 	
-	app.get('/signup', function(req, res){
+	app.get('/signup', function(req, res) {
+	    global.public_ip = requestIp.getClientIp(req);
+	    console.info('public ip address', global.public_ip);
 		res.render('template/signup',{ message: req.flash('message') });
 	});
 
@@ -33,6 +37,9 @@ module.exports = function(app, passport){
 		failureRedirect: '/signup',
 		failureFlash : true 
 	}));
+	app.get('/admin',isAuthenticated, function(req, res) {
+	   res.render('template/admin', {});
+	});
 	app.get('/readme',isAuthenticated, function(req, res) {
 	   res.render('template/readme', {});
 	});
