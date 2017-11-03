@@ -9,7 +9,7 @@ var db = function() {
 
     config: function(addr, dbname, opts, callback) {
       if( !initFlag ){
-        var connectUrl = 'mongodb://' + (addr ? addr : 'localhost:27017') + '/' + (dbname ? dbname : 'sbadmin');
+        var connectUrl = 'mongodb://' + (addr ? addr : 'localhost:27017') + '/' + (dbname ? dbname : 'yeepi-admin-panel');
         mongoose.connect(connectUrl, (opts ? opts : {}));
         //mongoose.createConnection(connectUrl, (opts ? opts : {}));
 
