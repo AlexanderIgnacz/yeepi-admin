@@ -11,6 +11,7 @@ var userModel = function () {
     password: String,
     email: String,
     gender: String,
+    admintype: String,
     address: String,
     registeredOn: String,
     signupIp: String

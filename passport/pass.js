@@ -63,6 +63,7 @@ module.exports = function(passport){
 	          newUser.email = req.param('email');
 	          newUser.firstName = req.param('firstName');
 	          newUser.lastName = req.param('lastName');
+	          newUser.admintype = req.param('admintype');;
           	  newUser.signupIp = global.public_ip;
 	          newUser.registeredOn = getRegisteredOn();
 	 

@@ -12,43 +12,226 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     DataTables Advanced Admin Users
+                    <button type="button" class="btn btn-primary btn-xs pull-right" id="createNewUserModalBtn">Create New User</button>
                 </div>
-                <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <div class="dataTable_wrapper" id="admintablecontainer">
-                        
-                    </div>
-                    <!-- /.table-responsive -->
+                    <div class="dataTable_wrapper" id="admintablecontainer" />
                 </div>
                 <!-- /.panel-body -->
             </div>
             <!-- /.panel -->
         </div>
-        <!-- /.col-lg-12 -->
+
+        <div class="col-lg-6">
+            <!-- Modal -->
+            <div class="modal fade" id="userEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Modify User Details</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Username</label>
+                                            <input class="form-control" id="modifyUserName">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Password</label>
+                                            <input class="form-control" id="modifyUserPass" type="password">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Confirm Password</label>
+                                            <input class="form-control" id="modifyUserConfirmPass" type="password">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Admin Type</label>
+                                <select class="form-control" id="modifyUserType">
+                                    <option>Super</option>
+                                    <option>Admin</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="modifyUserSave">Save changes</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+        </div>
+
+        <div class="col-lg-6">
+            <!-- Modal -->
+            <div class="modal fade" id="userCreateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Create New User</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input class="form-control" id="createModalUserEmail">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Username</label>
+                                            <input class="form-control" id="createModalUserName">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Password</label>
+                                            <input class="form-control" id="createModalUserPass" type="password">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Confirm Password</label>
+                                            <input class="form-control" id="createModalUserConfPass" type="password">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="createModalUserCreateBtn">Create</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+        </div>
+
     </div>
 </div>
 
 <script src="/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
 <script>
+    var current_userid = "";
     $(document).ready(function() {
         getList();
+        $("#modifyUserSave").click(function() {
+            var update_user = $('#modifyUserName').val();
+            var update_pass = $('#modifyUserPass').val();
+            var update_confpass = $('#modifyUserConfirmPass').val();
+            var update_admintype = $('#modifyUserType').val();
+            debugger;
+            if (update_user == "") {
+                alert("You have to input update username");
+            } else {
+                if (update_pass == "") {
+                    alert("You have to input update password");
+                } else {
+                    if (update_pass == update_confpass) {
+                        $.post("/user/update"
+                            ,{current_userid: current_userid, update_username: update_user, update_pass: update_pass, update_admintype: update_admintype}
+                            ,function(result){
+                                $('#userEditModal').modal('hide'); 
+                                getList();
+                            })
+                    } else {
+                        alert("Confirm password mismatch")
+                    }
+                }
+            }
+        });
+
+        $("#createModalUserCreateBtn").click(function() {
+            var createModalUserEmail = $('#createModalUserEmail').val();
+            var createModalUserName = $('#createModalUserName').val();
+            var createModalUserPass = $('#createModalUserPass').val();
+            var createModalUserConfPass = $('#createModalUserConfPass').val();
+            if (createModalUserEmail == "") {
+                alert("You have to input email");
+            } else {
+                if (createModalUserName == "") {
+                    alert("You have to input username");
+                } else {
+                    if (createModalUserPass == "") {
+                        alert("You have to input password");
+                    } else {
+                        if (createModalUserPass == createModalUserConfPass) {
+                            $.post("/user/createnew", {email: createModalUserEmail, username: createModalUserName, password: createModalUserPass, admintype: "Admin"}
+                                ,function(result){
+                                    debugger;
+                                    $('#userCreateModal').modal('hide');
+                                    getList();
+                                });
+                        } else {
+                            alert("Password Mismatch");
+                        }
+                    }
+                }
+            }            
+        });
+
+        $("#createNewUserModalBtn").click(function() {
+            $('#createModalUserEmail').val("");
+            $('#createModalUserName').val("");
+            $('#createModalUserPass').val("");
+            $('#createModalUserConfPass').val("");
+            $('#createModalUserType').val("Admin");
+            $('#userCreateModal').modal('show'); 
+        });
     });
     function getList(){
         $.get("/user/list"
           ,{}
           ,function(result){
             var tb = $('#admintablecontainer');
-            var div_data = "<table class=\"table table-striped table-bordered table-hover\" id=\"dataTables-example\"><thead><tr><th>Username</th><th>Admin Type</th><th>Email</th><th>Active</th><th>Registered On</th><th>Signup IP Address</th><th>Action</th></tr></thead><tbody>";
+            var div_data = "<table class=\"table table-striped table-bordered table-hover\" id=\"dataTables-example\"><thead><tr><th>Username</th><th>Admin Type</th><th>Email</th><th>Registered On</th><th>Signup IP Address</th><th>Action</th></tr></thead><tbody>";
             $.each(result,function(index, data){
                 var username = data.username;
-                var admintype = "admin";
+                var admintype = data.admintype;
                 var email = data.email;
-                var active = "active";
                 var registeredOn = data.registeredOn;
                 var signupIp = data.signupIp;
                 var id = data._id;
-                div_data+="<tr class='gradeA'><td>"+username+"</td><td>"+admintype+"</td><td>"+email+"</td><td class='center'>"+active+"</td><td class='center'>"+registeredOn+"</td><td class='center'>"+signupIp+"</td><td><button type='button' class='btn btn-danger btn-circle' onclick='removeUser(\""+id+"\",\""+username+"\")'><i class='fa fa-times'></i></button>&nbsp<button type='button' class='btn btn-warning btn-circle' onclick='removeUser(\""+id+"\",\""+username+"\")'><i class='fa fa-pencil-square-o'></i></button></td></tr>";
+                div_data+="<tr class='gradeA'><td>"+username+"</td><td>"+admintype+"</td><td>"+email+"</td><td class='center'>"+registeredOn+"</td><td class='center'>"+signupIp+"</td><td><button type='button' class='btn btn-danger btn-circle' onclick='removeUser(\""+id+"\",\""+username+"\")'><i class='fa fa-times'></i></button>&nbsp<button type='button' class='btn btn-warning btn-circle' onclick='editUser(\""+id+"\",\""+username+"\")'><i class='fa fa-pencil-square-o'></i></button></td></tr>";
             })
             div_data += "</tbody></table>";
             tb.html(div_data);
@@ -57,20 +240,32 @@
             });
           })
     }
-    function removeUser(id,username){
+    function removeUser(id,username) {
         $.get("/username",
             {},
             function(result) {
                 if (result.username == username) {
                     alert("You logged in this user");
                 } else {
-                    $.post("/user/delete"
-                        ,{id:id}
-                        ,function(result){
-                            getList();
-                        });
+                    if (confirm('Are you sure you want to remove this user?')) {
+                        $.post("/user/delete"
+                            ,{id:id}
+                            ,function(result){
+                                getList();
+                            });
+                    }
                 }
             });
+    }
+
+    function editUser(id,username) {
+        if (confirm('Are you sure you want to edit this user?')) {
+            current_userid = id;
+            $('#modifyUserName').val(username);
+            $('#modifyUserPass').val("");
+            $('#modifyUserConfirmPass').val("");
+            $('#userEditModal').modal('show'); 
+        }
     }
 
 </script>
