@@ -22,6 +22,18 @@ module.exports = function(app, passport){
 			res.send({"result":true});
 		})
 	});
+
+	app.get('/stafflogin/list/count',isAuthenticated, function(req, res) {
+		 StaffLogins.find({}, 
+	      function(err, histories) {
+	        if (err)
+	          return done(err);
+	        res.send({count: histories.length});
+	      }
+	    );
+	});
+
+	
 }
 
 // As with any middleware it is quintessential to call next()

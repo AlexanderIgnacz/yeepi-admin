@@ -9,7 +9,6 @@ var staffloginModel = function () {
     admintype: String,
     registeredOn: String,
   });
- 
 
   return mongoose.model('staff-login', staffloginSchema);
 };
