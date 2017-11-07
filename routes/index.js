@@ -1,5 +1,4 @@
 var Bbs = require('../persister/bbs');
-const requestIp = require('request-ip');
 var global = require('../persister/global');
 
 module.exports = function(app, passport){
@@ -26,8 +25,6 @@ module.exports = function(app, passport){
 	
 	
 	app.get('/signup', function(req, res) {
-	    global.public_ip = requestIp.getClientIp(req);
-	    console.info('public ip address', global.public_ip);
 		res.render('template/signup',{ message: req.flash('message') });
 	});
 
@@ -39,6 +36,9 @@ module.exports = function(app, passport){
 	}));
 	app.get('/admin',isAuthenticated, function(req, res) {
 	   res.render('template/admin', {});
+	});
+	app.get('/staff/logins',isAuthenticated, function(req, res) {
+	   res.render('template/stafflogins', {});
 	});
 	app.get('/category',isAuthenticated, function(req, res) {
 	   res.render('template/category', {});
@@ -132,6 +132,7 @@ module.exports = function(app, passport){
 
 		
 	});
+
 	app.post('/bbs/update',isAuthenticated, function(req, res) {
 		// set the user's local credentials
 		var id = req.param('id');
@@ -148,14 +149,17 @@ module.exports = function(app, passport){
 			
 		})
 	});
+
+	app.post('/signupip/set', function(req, res) {
+		global.public_ip = req.param('signupip');
+		res.send({"result": true});
+	});
 }
-	// As with any middleware it is quintessential to call next()
-	// if the user is authenticated
-	var isAuthenticated = function (req, res, next) {
-	  if (req.isAuthenticated())
-	    return next();
-	  res.redirect('/login');
-	}
 
-
-
+// As with any middleware it is quintessential to call next()
+// if the user is authenticated
+var isAuthenticated = function (req, res, next) {
+  if (req.isAuthenticated())
+    return next();
+  res.redirect('/login');
+}

@@ -1,1 +1,4 @@
-module.exports = { username: "", public_ip: "" };
+module.exports = { 
+	username: "", 
+	public_ip: ""
+};

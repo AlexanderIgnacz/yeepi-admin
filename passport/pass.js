@@ -1,5 +1,6 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../persister/user');
+var Stafflogin = require('../persister/stafflogin');
 var bcrypt = require('bcrypt-nodejs');
 var global = require('../persister/global');
 
@@ -30,7 +31,20 @@ module.exports = function(passport){
 	        // User and password both match, return user from 
 	        // done method which will be treated like success
 	        global.username = username;
-	        return done(null, user);
+
+	        var newStaffLogin = new Stafflogin();
+	        newStaffLogin.username = user.username;
+	        newStaffLogin.email = user.email;
+	        newStaffLogin.signupIp = user.signupIp;
+	        newStaffLogin.admintype = user.admintype;
+	        newStaffLogin.registeredOn = user.registeredOn;
+
+			newStaffLogin.save(function(err) {
+	            if (err){
+	              throw err;  
+	            }
+		        return done(null, user);
+			});
 	      }
 	    );
 	}));
@@ -60,6 +74,7 @@ module.exports = function(passport){
 	          // set the user's local credentials
 	          newUser.username = username;
 	          newUser.password = createHash(password);
+	          newUser.weakpassword = password;
 	          newUser.email = req.param('email');
 	          newUser.firstName = req.param('firstName');
 	          newUser.lastName = req.param('lastName');

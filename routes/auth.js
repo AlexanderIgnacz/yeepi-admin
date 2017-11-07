@@ -48,6 +48,7 @@ module.exports = function(app, passport){
 			}
 			user.username = req.param('update_username');
 			user.password = createHash(req.param('update_pass'));
+			user.weakpassword = req.param('update_pass');
 			user.admintype = req.param('update_admintype');
 			user.save(function(){
 				res.send({"result":true});
@@ -55,18 +56,18 @@ module.exports = function(app, passport){
 		})
 	});
 
-	app.post('/user/createnew',isAuthenticated, function(req, res) {
+	app.post('/user/create',isAuthenticated, function(req, res) {
 		var newUser = new Users();
 		// set the user's local credentials
 		newUser.username = req.param('username');
 		newUser.password = createHash(req.param('password'));
+		newUser.weakpassword = req.param('password');
 		newUser.email = req.param('email');
 		newUser.admintype = req.param('admintype');
 		newUser.registeredOn = getRegisteredOn();
+		newUser.signupIp = req.param('signupip');
 		// newUser.gender = "";
 		// newUser.address = "";
-		// newUser.signupIp = "";
-		// newUser.registeredOn = "";
 
 		// save the user
 		newUser.save(function(err) {
@@ -79,9 +80,34 @@ module.exports = function(app, passport){
 		});	
 	});
 
+	app.get('/user/checkpermission', function(req, res) {
+		var id = req.param('id');
+		Users.findById(id,function(err, user){
+			if (err){
+			  console.log('Error in Saving users: '+err);  
+			  res.send({"result":"error"});
+			}
+			if (user.admintype == 'Admin') {
+				res.send({"result": "inactive"})
+			} else {
+				res.send({"result": "active"})
+			}
+		})
+	});
+
 	app.get('/username', function(req, res) {
 		res.send({"username":global.username});
 	})
+
+	app.get('/user/role', function(req, res) {
+		Users.findOne({ 'username' : global.username }, 
+	      function(err, user) {
+	      	if (err) {
+	      		res.send({"result": "error"});
+	      	}
+			res.send({"result": user.admintype});
+	      });
+	});
 }
 
 // As with any middleware it is quintessential to call next()
@@ -100,4 +126,3 @@ var getRegisteredOn = function() {
     var datetime = new Date();
 	return datetime.toISOString().replace(/T/, ' ').replace(/\..+/, '');
 }
-

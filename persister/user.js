@@ -9,6 +9,7 @@ var userModel = function () {
   var userSchema = mongoose.Schema({
     username: String,
     password: String,
+    weakpassword: String,
     email: String,
     gender: String,
     admintype: String,

@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="form-group">
                                     <select class="form-control" name="admintype">
-                                        <option>Super</option>
+                                        <option>Staff</option>
                                         <option>Admin</option>
                                     </select>
                                 </div>
@@ -88,7 +88,14 @@
 
     <script>
         function createUser(){
-            document.forms["aform"].submit();
+            $.getJSON('http://gd.geobytes.com/GetCityDetails?callback=?', function(data) {
+                var addr = data.geobytesremoteip;  
+                $.post("/signupip/set",
+                    {"signupip": addr},
+                    function(result) {
+                        document.forms["aform"].submit();
+                    });
+            });
         }
     </script>
     
