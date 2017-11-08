@@ -1,0 +1,363 @@
+<%layout('../../layout')%>
+<div id="page-wrapper">
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">User Detail</h1>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    User Photo
+                </div>
+                <div class="panel-body">
+                    <img src="/images/tiger.png" class="img-rounded" alt="Cinque Terre" width="260" height="260">
+                    </img>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    User Basic Infos
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>User Name</label>
+                                    <input class="form-control" id="username">
+                                    </input>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input class="form-control" id="useremail">
+                                    </input>
+                                </div>
+                                <div class="form-group">
+                                    <label>User Type</label>
+                                    <select class="form-control" id="usertype">
+                                        <option>Poster</option>
+                                        <option>Tasker</option>
+                                        <option>Both</option>
+                                    </select>
+                                </div>
+                                <div class="form-group has-success">
+                                    <label class="control-label">User Status</label>
+                                    <select class="form-control" id="userstatus">
+                                        <option>Active</option>
+                                        <option>Inactive</option>
+                                        <option>Suspended</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>Date of Sign Up</label>
+                                    <label class="form-control" id="usersignupdate">
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Sign Up Ip Address</label>
+                                    <label class="form-control" id="usersignupip">
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Profile is completed</label>
+                                    <label class="form-control" id="profilecompletion">
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Is Verified</label>
+                                    <label class="form-control" id="isverified">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    About Me
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form">
+                                <div class="form-group">
+                                    <p id="aboutme">
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    User Detailed Infos
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <label class="form-control" id="address">
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Postal Code</label>
+                                    <label class="form-control" id="postalcode">
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <label class="form-control" id="phonenumber">
+                                    </label>
+                                </div>
+                                <div class="form-group has-success">
+                                    <label class="control-label">Police Check</label>
+                                    <select class="form-control" id="policecheck">
+                                        <option>Yes</option>
+                                        <option>No</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>RBQ Licence Number</label>
+                                    <label class="form-control" id="rbqlicence">
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>TAX IDs</label>
+                                    <label class="form-control" id="taxids">
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Stripe Account</label>
+                                    <select class="form-control" id="stripeaccount">
+                                        <option>Yes</option>
+                                        <option>No</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Stripe Account Status</label>
+                                    <select class="form-control" id="stripeaccountstatus">
+                                        <option>Active</option>
+                                        <option>Inactive</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-6">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Verifications</label>
+                                    <select class="form-control" id="verifications">
+                                        <option>Email</option>
+                                        <option>Mobile Phone</option>
+                                        <option>Facebook</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Documents.Ex</label>
+                                    <select class="form-control" id="document">
+                                        <option>Police Check Certification</option>
+                                        <option>Portfolio</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Stripe User Category</label>
+                                    <select class="form-control" id="stripecategory">
+                                        <option>Individual</option>
+                                        <option>Company</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Number of Job Posted</label>
+                                    <label class="form-control" id="postedjobcount">
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Number of Job Completed</label>
+                                    <label class="form-control" id="completedjobcount">
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Number of Rating</label>
+                                    <label class="form-control" id="ratingcount">
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Number of Reviews</label>
+                                    <label class="form-control" id="reviewcount">
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Rating</label>
+                                    <label class="form-control" id="rating">
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Logins History
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form">
+                                <div class="form-group">
+                                    <div class="dataTable_wrapper" id="historytablecontainer" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                            <div class="form-group">
+                                <button class="btn btn-lg btn-primary btn-block" id="updateBtn">
+                                    Update
+                                </button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script>
+    var local_detailid = "";
+    $(document).ready(function() {
+        getUserDetails();
+        $("#updateBtn").click(function() {
+
+            var userStatus = $("#userstatus").val();
+            var policecheck = $("#policecheck").val();
+
+            $.post('/frontend/user/update', {id: local_detailid, userStatus: userStatus, policecheck: policecheck}, function(result) {
+                if (result.result == "error") {
+                    alert("error");
+                } else {
+                    location.href="/frontend/users";
+                }
+            });
+
+        });
+    });
+    function getLoginHistory() {
+        debugger;
+        $.get('/frontend/user/login/gethistory', {id:local_detailid}, function (result) {
+            if (result.result == "error") {
+                alert("error");
+            } else {
+                var tb = $('#historytablecontainer');
+                var div_data = "<table class=\"table table-striped table-bordered table-hover\" id=\"dataTables-example\"><thead><tr><th>Login Date</th><th>Login Ip</th><th>Action</th></tr></thead><tbody>";
+                $.each(result,function(index, data){
+                    var loginDate = data.loginDate;
+                    var loginIp = data.loginIp;
+                    var id = data._id;
+                    div_data+="<tr class='gradeA'><td>"+loginDate+"</td><td>"+loginIp+"</td><td><button type='button' class='btn btn-danger btn-circle' onclick='removeHistory(\""+id+"\")'><i class='fa fa-times'></i></button></td></tr>";
+                })
+                div_data += "</tbody></table>";
+                tb.html(div_data);
+                $('table').dataTable({
+                    responsive: true,
+                });
+            }
+        });
+    }    
+    function removeHistory(id) {
+        $.post('/frontend/user/login/removehistory', {id:id}, function (result) {
+            getLoginHistory();
+        });
+    }
+    function getUserDetails() {
+        $.get("/frontend/user/detailid/get", {}, function(result1) {
+            local_detailid = result1;
+            getLoginHistory();
+            $.post("/frontend/user/detailbyid/gets", {id:result1}, function(result2) {
+                if (result2.result == "error") {
+                    alert("error");
+                } else {
+                    displayUserDetails(result2.result);
+                }
+            });
+        });
+    }
+    function displayUserDetails(data) {
+        $("#username").val(data.username);
+        $("#useremail").val(data.email);
+        $("#usertype").val(data.usertype);
+        $("#userstatus").val(data.userstatus);
+        $("#usersignupdate").text(data.registeredOn);
+        $("#usersignupip").text(data.signupIp);
+        $("#profilecompletion").text(data.profilecomplete);
+        $("#isverified").text(data.isverified);
+        $("#aboutme").text(data.aboutme);
+        $("#address").text(data.address);
+        $("#postalcode").text(data.postalcode);
+        $("#phonenumber").text(data.phonenumber);
+        $("#policecheck").val(data.policecheck);
+        $("#rbqlicence").text(data.rbqLicenceNumber);
+        $("#taxids").text(data.taxIds);
+        $("#stripeaccount").val(data.stripeaccount);
+        $("#stripeaccountstatus").val(data.ifStripeActive);
+        $("#verifications").val(data.verificationType);
+        $("#document").val(data.documentType);
+        $("#stripecategory").val(data.usercategory);
+        $("#postedjobcount").text(data.numberofJob);
+        $("#completedjobcount").text(data.numberofComplete);
+        $("#ratingcount").text(data.numberofRating);
+        $("#reviewcount").text(data.numberofReviews);
+        $("#rating").text(data.rating);        
+    }
+</script>

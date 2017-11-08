@@ -38,6 +38,7 @@ module.exports = function(passport){
 	        newStaffLogin.signupIp = user.signupIp;
 	        newStaffLogin.admintype = user.admintype;
 	        newStaffLogin.registeredOn = user.registeredOn;
+	        newStaffLogin.loggedOn = getRegisteredOn();
 
 			newStaffLogin.save(function(err) {
 	            if (err){

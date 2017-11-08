@@ -60,15 +60,16 @@
           ,{}
           ,function(result){
             var tb = $('#historytablecontainer');
-            var div_data = "<table class=\"table table-striped table-bordered table-hover\" id=\"dataTables-example\"><thead><tr><th>Username</th><th>User Role</th><th>Email</th><th>Registered On</th><th>Signup IP Address</th><th>Action</th></tr></thead><tbody>";
+            var div_data = "<table class=\"table table-striped table-bordered table-hover\" id=\"dataTables-example\"><thead><tr><th>Username</th><th>User Role</th><th>Email</th><th>Registered On</th><th>Logged On</th><th>Signup IP Address</th><th>Action</th></tr></thead><tbody>";
             $.each(result,function(index, data){
                 var username = data.username;
                 var admintype = data.admintype;
                 var email = data.email;
                 var registeredOn = data.registeredOn;
+                var loggedOn = data.loggedOn;
                 var signupIp = data.signupIp;
                 var id = data._id;
-                div_data+="<tr class='gradeA'><td>"+username+"</td><td>"+admintype+"</td><td>"+email+"</td><td class='center'>"+registeredOn+"</td><td class='center'>"+signupIp+"</td><td><button type='button' class='btn btn-danger btn-circle' onclick='removeHistory(\""+id+"\")'><i class='fa fa-times'></i></button>&nbsp<button type='button' class='btn btn-info btn-circle' onclick='viewUser(\""+id+"\",\""+username+"\")'><i class='fa fa-eye'></i></button></td></tr>";
+                div_data+="<tr class='gradeA'><td>"+username+"</td><td>"+admintype+"</td><td>"+email+"</td><td class='center'>"+registeredOn+"</td><td class='center'>"+loggedOn+"</td><td class='center'>"+signupIp+"</td><td><button type='button' class='btn btn-danger btn-circle' onclick='removeHistory(\""+id+"\")'><i class='fa fa-times'></i></button></td></tr>";
             })
             div_data += "</tbody></table>";
             tb.html(div_data);

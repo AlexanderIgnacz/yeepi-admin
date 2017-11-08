@@ -40,6 +40,9 @@ module.exports = function(app, passport){
 	app.get('/staff/logins',isAuthenticated, function(req, res) {
 	   res.render('template/stafflogins', {});
 	});
+	app.get('/frontend/users',isAuthenticated, function(req, res) {
+	   res.render('template/frontend/users', {});
+	});
 	app.get('/category',isAuthenticated, function(req, res) {
 	   res.render('template/category', {});
 	});

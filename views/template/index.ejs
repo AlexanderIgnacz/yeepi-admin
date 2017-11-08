@@ -60,12 +60,12 @@
                             <i class="fa fa-tasks fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">12</div>
-                            <div>New Tasks!</div>
+                            <div class="huge" id="feusercount">0</div>
+                            <div>Users</div>
                         </div>
                     </div>
                 </div>
-                <a href="#">
+                <a href="/frontend/users">
                     <div class="panel-footer">
                         <span class="pull-left">View Details</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -589,6 +589,7 @@
     $(document).ready(function() {
         getAdminUserCount();
         getLoginHistoryCount();
+        getFEUserCount();
     });
     function getAdminUserCount(){
         $.get("/user/list/count"
@@ -602,6 +603,13 @@
           ,{}
           ,function(result){
             $('#historycount').html(result.count);
+          })
+    }
+    function getFEUserCount() {
+        $.get("/feuser/list/count"
+          ,{}
+          ,function(result){
+            $('#feusercount').html(result.count);
           })
     }
 </script>

@@ -8,6 +8,7 @@ var staffloginModel = function () {
     signupIp: String,
     admintype: String,
     registeredOn: String,
+    loggedOn: String
   });
 
   return mongoose.model('staff-login', staffloginSchema);
