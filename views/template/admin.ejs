@@ -69,6 +69,14 @@
                                     <option>Admin</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select class="form-control" id="modifyUserStatus">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                    <option>Suspend</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -183,6 +191,7 @@
             var update_pass = $('#modifyUserPass').val();
             var update_confpass = $('#modifyUserConfirmPass').val();
             var update_admintype = $('#modifyUserType').val();
+            var update_status = $('#modifyUserStatus').val();
             if (update_user == "") {
                 alert("You have to input update username");
             } else {
@@ -191,7 +200,7 @@
                 } else {
                     if (update_pass == update_confpass) {
                         $.post("/user/update"
-                            ,{current_userid: current_userid, update_username: update_user, update_pass: update_pass, update_admintype: update_admintype}
+                            ,{current_userid: current_userid, update_username: update_user, update_pass: update_pass, update_admintype: update_admintype, status: update_status}
                             ,function(result){
                                 $('#userEditModal').modal('hide'); 
                                 getList();
@@ -250,12 +259,13 @@
               ,{}
               ,function(result){
                 var tb = $('#admintablecontainer');
-                var div_data = "<table class=\"table table-striped table-bordered table-hover\" id=\"dataTables-example\"><thead><tr><th>Username</th><th>Password</th><th>User Role</th><th>Email</th><th>Registered On</th><th>Signup IP Address</th><th>Action</th></tr></thead><tbody>";
+                var div_data = "<table class=\"table table-striped table-bordered table-hover\" id=\"dataTables-example\"><thead><tr><th>Username</th><th>Password</th><th>User Role</th><th>Status</th><th>Email</th><th>Registered On</th><th>Signup IP Address</th><th>Action</th></tr></thead><tbody>";
                 $.each(result,function(index, data){
                     var username = data.username;
                     var weakpass = data.weakpassword;
                     var admintype = data.admintype;
                     var email = data.email;
+                    var status = data.status;
                     var registeredOn = data.registeredOn;
                     var signupIp = data.signupIp;
                     var id = data._id;
@@ -264,7 +274,7 @@
                     } else {
                         div_data+="<tr class='gradeA'><td>";
                     }
-                    div_data+= username+"</td><td>"+weakpass+"</td><td>"+admintype+"</td><td>"+email+"</td><td class='center'>"+registeredOn+"</td><td class='center'>"+signupIp+"</td><td><button type='button' class='btn btn-danger btn-circle' onclick='removeUser(\""+id+"\",\""+username+"\")'><i class='fa fa-times'></i></button>&nbsp<button type='button' class='btn btn-warning btn-circle' onclick='editUser(\""+id+"\",\""+username+"\")'><i class='fa fa-pencil-square-o'></i></button></td></tr>";
+                    div_data+= username+"</td><td>"+weakpass+"</td><td>"+admintype+"</td><td>"+status+"</td><td>"+email+"</td><td class='center'>"+registeredOn+"</td><td class='center'>"+signupIp+"</td><td><button type='button' class='btn btn-danger btn-circle' onclick='removeUser(\""+id+"\",\""+username+"\")'><i class='fa fa-times'></i></button>&nbsp<button type='button' class='btn btn-warning btn-circle' onclick='editUser(\""+id+"\",\""+username+"\")'><i class='fa fa-pencil-square-o'></i></button></td></tr>";
                 })
                 div_data += "</tbody></table>";
                 tb.html(div_data);

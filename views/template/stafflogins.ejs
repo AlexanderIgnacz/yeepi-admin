@@ -80,9 +80,11 @@
     }
 
     function removeHistory(id) {
+      if (confirm('Are you sure you want to remove this history?')) {
         $.post("/history/remove", {id:id}, function(result) {
-            getList();
+          getList();
         });
+      }
     }
 
     function viewHistory(id,username) {

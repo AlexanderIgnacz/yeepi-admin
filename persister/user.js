@@ -11,7 +11,8 @@ var userModel = function () {
     admintype: String,
     address: String,
     registeredOn: String,
-    signupIp: String
+    signupIp: String,
+    status: String
   });
  
 

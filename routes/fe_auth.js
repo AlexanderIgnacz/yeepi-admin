@@ -1,25 +1,39 @@
 var FrontEndUser = require('../persister/frontenduser');
 var FrontEndUserLoginHistory = require('../persister/frontenduserloginhistory');
+var bodyParser = require("body-parser");
 var global = require('../persister/global');
 var bcrypt = require('bcrypt-nodejs');
 var nodemailer = require('nodemailer');
+var AWS = require('aws-sdk');
+
+
+
+AWS.config.update({accessKeyId: 'AKIAIRJXVAVFSCH7FVZA', secretAccessKey: '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', region: "us-east-1"});
+var ses = new AWS.SES({apiVersion: '2010-12-01'});
 
 module.exports = function(app, passport){
+  
 	app.post('/feuser/create', function(req, res) {
 		var frontendUser = new FrontEndUser();
 		frontendUser.username = req.param('username');
-		frontendUser.email = req.param('email');
-		frontendUser.usertype = req.param('usertype');
+    frontendUser.email = req.param('email').toLowerCase();
+    frontendUser.password = req.param('password');
+		frontendUser.usertype = req.param('accounttype');
+    frontendUser.phonenumber = req.param('phonenumber');
+    frontendUser.address = req.param('address');
+    frontendUser.availablelanguage = req.param('availablelanguage');
+    frontendUser.language = req.param('language');
+    frontendUser.transportation = req.param('trans');
+    frontendUser.skill = req.param('skill');
+    
 		frontendUser.userstatus = req.param('userstatus');
 		frontendUser.registeredOn = req.param('registeredOn');
 		frontendUser.profilecomplete = req.param('profilecomplete');
 		frontendUser.isverified = req.param('isverified');
 		frontendUser.aboutme = req.param('aboutme');
 		frontendUser.pictureUrl = req.param('pictureUrl');
-		frontendUser.address = req.param('address');
 		frontendUser.signupIp = req.param('signupIp');
-		frontendUser.postalcode = req.param('postalcode');
-		frontendUser.phonenumber = req.param('phonenumber');
+		frontendUser.postalcode = req.param('zipcode');
 		frontendUser.policecheck = req.param('policecheck');
 		frontendUser.rbqLicenceNumber = req.param('rbqLicenceNumber');
 		frontendUser.taxIds = req.param('taxIds');
@@ -34,6 +48,7 @@ module.exports = function(app, passport){
 		frontendUser.numberofReviews = req.param('numberofReviews');
 		frontendUser.rating = req.param('rating');
 		frontendUser.loginHistory = req.param('loginHistory');
+		frontendUser.imagePreviewUrl = "";
 
 		frontendUser.save(function(err) {
 			if (err) {
@@ -66,10 +81,10 @@ module.exports = function(app, passport){
 	app.get('/frontend/users/list', isAuthenticated, function(req, res) {
 		FrontEndUser.find({},
 			function(err, list) {
-		        if (err)
-					return done(err);
-		        res.send(list);
-			}
+					if (err)
+						return done(err);
+					res.send(list);
+				}
 	    );
 	});
 
@@ -84,36 +99,169 @@ module.exports = function(app, passport){
 	});
 
 	app.post('/user/sendmail', isAuthenticated, function(req, res) {
-		var transporter = nodemailer.createTransport({
-		  service: 'gmail',
-		  auth: {
-		    user: 'tunacoder@gmail.com',
-		    pass: 'Mybdayis123'
-		  }
-		});
+    ses.sendEmail(
+      {
+        Source: 'yeepi.dev@gmail.com',
+        Destination: { ToAddresses: [req.param('sendto')] },
+        Message: {
+          Subject: {
+            Data: req.param('subject')
+          },
+          Body: {
+            Text: {
+              Data: req.param('text')
+            }
+          }
+        }
+      }
+      , function(err, data) {
+        if(err) throw err;
+        console.log('Email sent:');
+        console.log(data);
+      });
+    res.send({"result":true});
+	});
 
-		var mailOptions = {
-		  from: 'tunacoder@gmail.com',
-		  to: req.param('sendto'),
-		  subject: req.param('subject'),
-		  text: req.param('text')
-		};
+	app.post('/user/signupverify', function(req, res) {
 
-		transporter.sendMail(mailOptions, function(error, info){
-		  if (error) {
-		    console.log(error);
-		  } else {
-		    console.log('Email sent: ' + info.response);
-		  }
-		  res.send({"result": true});
-		});
+		var code = stringGen(6);
+
+		ses.sendEmail(
+			{
+				Source: 'yeepi.dev@gmail.com',
+				Destination: { ToAddresses: [req.param('email')] },
+				Message: {
+					Subject: {
+						Data: 'Signup Email Verification'
+					},
+					Body: {
+						Text: {
+							Data: code
+						}
+					}
+				}
+			}
+			, function(err, data) {
+				if(err) throw err;
+				console.log('Email sent:');
+				console.log(data);
+			});
+		res.send({"result": true, "code": code});
+	});
+	
+	app.post('/user/signup/validate/username', function (req, res) {
+    FrontEndUser.find({ 'username' : req.param('username') },
+      function(err, users) {
+        if (err) {
+          res.send({"result": "error"});
+        }
+        if (users.length === 0) {
+          res.send({"result": true});
+				} else {
+          res.send({"result": false});
+				}
+      });
+  });
+  
+  app.post('/user/signup/validate/email', function (req, res) {
+    FrontEndUser.find({ 'email' : req.param('email').toLowerCase() },
+      function(err, users) {
+        if (err) {
+          res.send({"result": "error"});
+        }
+        if (users.length === 0) {
+          res.send({"result": true});
+        } else {
+          res.send({"result": false});
+        }
+      });
+  });
+  
+	app.post('/user/signup/first', function(req, res) {
+		
+		var token = stringGen(80);
+		
+    var frontendUser = new FrontEndUser();
+    frontendUser.username = req.param('username');
+    frontendUser.email = req.param('email').toLowerCase();
+    frontendUser.password = req.param('password');
+    frontendUser.availablelanguage = req.param('availablelanguage');
+    frontendUser.language = req.param('language');
+    frontendUser.transportation = req.param('trans');
+    frontendUser.address = req.param('address');
+    frontendUser.postalcode = req.param('zipcode');
+    frontendUser.lat = req.param('lat');
+    frontendUser.lng = req.param('lng');
+    frontendUser.phonenumber = req.param('phonenumber');
+    frontendUser.usertype = req.param('accounttype');
+    frontendUser.skill = req.param('skill');
+    frontendUser.signupStep = 1;
+    if (req.param('signupstep') == 2) {
+      frontendUser.signupStep = 2;
+    }
+    
+    frontendUser.userstatus = "Active";
+    frontendUser.registeredOn = getRegisteredOn();
+    frontendUser.profilecomplete = "Incompleted";
+    frontendUser.isverified = "Unverfied";
+    frontendUser.aboutme = "";
+    frontendUser.pictureUrl = "";
+    frontendUser.signupIp = req.param('signupIp');
+    frontendUser.policecheck = false;
+    frontendUser.rbqLicenceNumber = "";
+    frontendUser.taxIds = "";
+    frontendUser.stripeaccount = "";
+    frontendUser.ifStripeActive = "";
+    frontendUser.verificationType = "";
+    frontendUser.documentType = "";
+    frontendUser.usercategory = "";
+    frontendUser.numberofJob = 0;
+    frontendUser.numberofComplete = 0;
+    frontendUser.numberofRating = 0;
+    frontendUser.numberofReviews = 0;
+    frontendUser.rating = 0;
+    frontendUser.loginHistory = "";
+    frontendUser.token = token;
+    frontendUser.emailverified = true;
+    frontendUser.phoneverified = false;
+    frontendUser.fbverified = false;
+    frontendUser.bankname = "";
+    frontendUser.imagePreviewUrl = "";
+    frontendUser.portfolio = [];
+    
+    frontendUser.institution = "";
+    frontendUser.bankaddr = "";
+		frontendUser.transit = "";
+		frontendUser.city = "";
+		frontendUser.accountnumber = "";
+		frontendUser.birth = "";
+		frontendUser.insurance = "";
+		frontendUser.businessname = "";
+		frontendUser.gstTax = "";
+		frontendUser.pstTax = "";
+		
+		frontendUser.min_amount = 10;
+		frontendUser.max_amount = 200;
+    
+    frontendUser.fb_id = "";
+    frontendUser.fb_email = "";
+    frontendUser.fb_name = "";
+    frontendUser.fb_accessToken = "";
+    
+    
+    frontendUser.save(function(err) {
+      if (err) {
+        console.info(err);
+      }
+      res.send({"result":true, "token": token});
+    });
 	});
 
 	app.get('/frontend/user/detail',isAuthenticated, function(req, res) {
 		console.info(req);
 		res.render('template/frontend/userdetail',{ message: req.flash('message') });
 	});
-
+ 
 	app.post('/frontend/user/detailid/set',isAuthenticated, function(req, res) {
 		global.detailuserid = req.param('id');
 		res.send({"result": true});
@@ -177,11 +325,11 @@ module.exports = function(app, passport){
 			}
 			FrontEndUserLoginHistory.find({username: user.username},
 				function(err, list) {
-			        if (err)
+					if (err)
 						return done(err);
-			        res.send(list);
+					res.send(list);
 				}
-		    );
+			);
 		})
 	});
 
@@ -194,8 +342,273 @@ module.exports = function(app, passport){
 			res.send({"result":true});
 		})
 	});
+	
+  app.post('/frontend/user/login', function(req, res) {
+  	var email = req.param('email').toLowerCase();
+  	var pass = req.param('pass');
+    FrontEndUser.find({email: email}, function(err, users){
+      if (err){
+        res.send({"result":false, "text": err});
+      }
+      if (users.length === 0) {
+      	res.send({"result": false, "text": "There is no email you entered."})
+			} else {
+        if (users[0].password === pass) {
+          res.send({ "result": true, "token": users[0].token, "signupStep": users[0].signupStep, "userstatus": users[0].userstatus, "imagePreviewUrl": users[0].imagePreviewUrl })
+				} else {
+          res.send({"result": false, "text": "Password is incorrect, please try again."})
+				}
+			}
+    })
+  });
+  
+  app.post('/frontend/user/fetchpersonalinfos', function(req, res) {
+    FrontEndUser.find({token: req.param('token')}, function(err, users) {
+      if (err){
+        res.send({"result":false, "text": err});
+      }
+      res.send({"result":true, "personal_datas":users[0]});
+    });
+  });
+  
+  app.post('/frontend/user/updateFB', function(req, res) {
+    FrontEndUser.find({token: req.param('token')}, function(err, users) {
+      if (err){
+        res.send({"result":false, "text": err});
+      }
+      users[0].fb_id = req.param('fb_id');
+      users[0].fb_email = req.param('fb_email');
+      users[0].fb_name = req.param('fb_name');
+      users[0].fb_accessToken = req.param('fb_accessToken');
+      users[0].fbverified = true;
+      users[0].save(function(err) {
+        if (err) {
+          res.send({"result":false, "text": err});
+        }
+        res.send({"result":true, "personal_datas":users[0]});
+      });
+    });
+  });
+  
+  app.post('/frontend/user/editSave1', function(req, res) {
+    FrontEndUser.find({token: req.param('token')}, function(err, users) {
+      if (err){
+        res.send({"result":false, "text": err});
+      }
+      users[0].username = req.param('username');
+      users[0].phonenumber = req.param('phonenumber');
+      users[0].address = req.param('address');
+      users[0].imagePreviewUrl = req.param('imagePreviewUrl');
+      users[0].portfolio = req.param('portfolio');
+  
+      if (req.param('usertype') === 1) {
+        users[0].usertype = "Tasker";
+      } else if (req.param('usertype') === 2) {
+        users[0].usertype = "Poster";
+      } else {
+        users[0].usertype = "Both";
+      }
+      if (req.param('language')) {
+        users[0].language = "English";
+      } else {
+        users[0].language = "French";
+      }
+      users[0].aboutme = req.param('aboutme');
+      users[0].availablelanguage = req.param('availablelanguage');
+      users[0].save(function(err) {
+        if (err) {
+          res.send({"result":false, "text": err});
+        }
+        res.send({"result":true, "personal_datas":users[0]});
+      });
+    });
+  });
+  
+  app.post('/frontend/user/editSave2', function(req, res) {
+    FrontEndUser.find({token: req.param('token')}, function(err, users) {
+      if (err){
+        res.send({"result":false, "text": err});
+      }
+      users[0].skill = req.param('skill');
+      users[0].transportation = req.param('trans');
+      users[0].rbqLicenceNumber = req.param('rbq');
+      users[0].policecheck = req.param('policecheck');
+      users[0].save(function(err) {
+        if (err) {
+          res.send({"result":false, "text": err});
+        }
+        res.send({"result":true, "personal_datas":users[0]});
+      });
+    });
+  });
+  
+  app.post('/frontend/user/sendforgotcode', function(req, res) {
+    FrontEndUser.find({email: req.param('email').toLowerCase()}, function(err, users) {
+      if (err){
+        res.send({"result":false, "text": err});
+      }
+      if (users.length === 0) {
+      	res.send({"result":false, "text": "We can't find this email."});
+			} else {
+        var code = stringGen(6);
+  
+        ses.sendEmail(
+          {
+            Source: 'yeepi.dev@gmail.com',
+            Destination: { ToAddresses: [req.param('email')] },
+            Message: {
+              Subject: {
+                Data: 'Forgot Password Email Verification. Please copy this code ' + code + ' and paste in yeepi.'
+              },
+              Body: {
+                Text: {
+                  Data: code
+                }
+              }
+            }
+          }
+          , function(err, data) {
+            if(err) throw err;
+            console.log('Email sent:');
+            console.log(data);
+          });
+        res.send({"result": true, "code": code});
+			}
+    });
+  });
+  
+  
+  
+  app.post('/frontend/user/phoneverify', function(req, res) {
+  
+    const accountSid = 'ACc6a83be8c3e1c3ac7794a0feb172f356';
+    const authToken = '576924e1ec783d42ff00c880cb254158';
 
-}
+    const client = require('twilio')(accountSid, authToken);
+
+
+    var code = stringGen(6);
+    client.messages
+      .create({
+        to: req.param('phonenumber'),
+        from: '+15149003621',
+        body: 'Veriication code: ' + code
+      })
+      .then(res.send({"result": true, "code": code}))
+		
+  });
+  
+  app.post('/frontend/user/phoneverifyinprofile', function(req, res) {
+  
+    FrontEndUser.find({token: req.param('token')}, function(err, users) {
+      if (err){
+        res.send({"result":false, "text": err});
+      }
+      users[0].phoneverified = true;
+      users[0].save(function(err) {
+        if (err) {
+          console.info(err);
+          res.send({"result":false, "text":err});
+        }
+        res.send({"result":true, personal_datas: users[0]});
+      });
+    });
+    
+  });
+  
+  
+  app.post('/frontend/user/uploadfiletest', function(req, res) {
+  
+    if (!req.param('file')) {
+      return res.send({
+        success: false
+      });
+    } else {
+      return res.send({
+        success: true
+      })
+    }
+    
+    // FrontEndUser.find({token: req.param('token')}, function(err, users) {
+    //   if (err) {
+    //     res.send({"result": false})
+    //   }
+    //   if (users.length === 0) {
+    //     res.send({"result":false, "text": "no data"});
+    //   } else {
+    //     const file = req.param('file');
+    //     res.send({"result":true, "filesize": file.size, "filesize1": 0});
+    //   }
+    // });
+  });
+  
+	
+  app.post('/frontend/user/sendforgotreq', function(req, res) {
+    FrontEndUser.find({email: req.param('email').toLowerCase()}, function(err, users) {
+      if (err){
+        res.send({"result":false, "text": err});
+      }
+      if (users.length === 0) {
+        res.send({"result":false, "text": "We can't find this email."});
+      } else {
+        users[0].password = req.param('newpass');
+        users[0].save(function(err) {
+          if (err) {
+            console.info(err);
+          }
+          res.send({"result":true});
+        })
+      }
+    });
+  });
+  
+  app.post('/frontend/user/updateProfile', function(req, res) {
+    FrontEndUser.find({token: req.param('token')}, function(err, users) {
+      if (err){
+        res.send({"result":false, "text": err});
+      }
+      users[0].bankname = req.param('_input_bankname');
+      users[0].accountholdername = req.param('_input_accountholder');
+      users[0].institution =  req.param('_input_institution');
+      users[0].bankaddr = req.param('_input_bankaddr');
+      users[0].transit = req.param('_input_transit');
+      users[0].city = req.param('_input_city');
+      users[0].postalcode = req.param('zipcode');
+      users[0].lat = req.param('lat');
+      users[0].lng = req.param('lng');
+      users[0].accountnumber = req.param('_input_accountnumber');
+      users[0].birth = req.param('_input_birth');
+      users[0].insurance = req.param('_input_insurance');
+      users[0].businessname = req.param('_input_businessname');
+      users[0].gstTax = req.param('_input_gstTax');
+      users[0].pstTax = req.param('_input_pstTax');
+      users[0].signupStep = 2;
+      users[0].save(function(err) {
+        if (err) {
+          console.info(err);
+        }
+        res.send({"result":true});
+      });
+    });
+  });
+  
+  app.post('/frontend/user/updatelanguage', function(req, res) {
+    FrontEndUser.find({token: req.param('token')}, function(err, users) {
+      if (err){
+        res.send({"result":false, "text": err});
+      }
+      users[0].language = req.param('language');
+      users[0].save(function(err) {
+        if (err) {
+          console.info(err);
+        }
+        res.send({"result":true});
+      });
+    });
+  });
+  
+  
+};
 
 // As with any middleware it is quintessential to call next()
 // if the user is authenticated
@@ -203,13 +616,23 @@ var isAuthenticated = function (req, res, next) {
   if (req.isAuthenticated())
     return next();
   res.redirect('/login');
-}
+};
 
 var createHash = function(password){
  return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
-}
+};
 
 var getRegisteredOn = function() {
     var datetime = new Date();
 	return datetime.toISOString().replace(/T/, ' ').replace(/\..+/, '');
-}
+};
+
+
+var stringGen = function(len) {
+    var text = " ";    
+    var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+";
+    for( var i=0; i < len; i++ )
+        text += charset.charAt(Math.floor(Math.random() * charset.length));
+    
+    return text;
+};

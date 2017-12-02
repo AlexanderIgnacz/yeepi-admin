@@ -50,6 +50,7 @@ module.exports = function(app, passport){
 			user.password = createHash(req.param('update_pass'));
 			user.weakpassword = req.param('update_pass');
 			user.admintype = req.param('update_admintype');
+			user.status = req.param('status');
 			user.save(function(){
 				res.send({"result":true});
 			})
@@ -66,6 +67,8 @@ module.exports = function(app, passport){
 		newUser.admintype = req.param('admintype');
 		newUser.registeredOn = getRegisteredOn();
 		newUser.signupIp = req.param('signupip');
+		newUser.status = req.param('status');
+		newUser.status = "Active";
 		// newUser.gender = "";
 		// newUser.address = "";
 

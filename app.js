@@ -11,8 +11,7 @@ var app = express();
 var passport = require('passport');
 var expressSession = require('express-session');
 var flash = require('connect-flash');
-
-
+var cors = require('cors');
 // view engine setup
 app.engine('ejs', engine);
 app.set('views', path.join(__dirname, 'views'));
@@ -24,19 +23,22 @@ app.use(expressSession({secret: 'mySecretKey'}));
 
 
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+app.use(bodyParser.urlencoded({limit: '50mb'}));
+app.use(cors());
+app.use(bodyParser.json({limit:1024*1024*50, type:'application/json', extended: true}));
 
 require('./passport/pass')(passport);
 require('./routes/index')(app, passport);
 require('./routes/auth')(app, passport);
 require('./routes/stafflogin')(app, passport);
 require('./routes/fe_auth')(app, passport);
+require('./routes/task_auth')(app, passport);
 require('./routes/stripe')(app, passport);
 
 // catch 404 and forward to error handler

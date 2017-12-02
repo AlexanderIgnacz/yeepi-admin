@@ -177,9 +177,11 @@
     }
 
     function removeHistory(id) {
+      if (confirm('Are you sure you want to remove this user?')) {
         $.post("/frontend/user/delete", {id:id}, function(result) {
-            getList($("#userTableFilter").val());
+          getList($("#userTableFilter").val());
         });
+      }
     }
 
     function viewUser(id,username) {

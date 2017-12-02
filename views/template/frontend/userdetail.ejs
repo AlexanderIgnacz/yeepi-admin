@@ -16,7 +16,7 @@
                     User Photo
                 </div>
                 <div class="panel-body">
-                    <img src="/images/tiger.png" class="img-rounded" alt="Cinque Terre" width="260" height="260">
+                    <img src="/images/tiger.png" class="img-rounded" alt="Cinque Terre" width="260" height="260" id="user_photo_src">
                     </img>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                                     </label>
                                 </div>
                                 <div class="form-group">
-                                    <label>Profile is completed</label>
+                                    <label>Profile is completed                                                                                                                                                                                                     </label>
                                     <label class="form-control" id="profilecompletion">
                                     </label>
                                 </div>
@@ -294,7 +294,6 @@
         });
     });
     function getLoginHistory() {
-        debugger;
         $.get('/frontend/user/login/gethistory', {id:local_detailid}, function (result) {
             if (result.result == "error") {
                 alert("error");
@@ -358,6 +357,7 @@
         $("#completedjobcount").text(data.numberofComplete);
         $("#ratingcount").text(data.numberofRating);
         $("#reviewcount").text(data.numberofReviews);
-        $("#rating").text(data.rating);        
+        $("#rating").text(data.rating);
+        $("#user_photo_src").attr('src',data.imagePreviewUrl);
     }
 </script>
