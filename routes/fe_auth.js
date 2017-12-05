@@ -98,55 +98,32 @@ module.exports = function(app, passport){
 		});
 	});
 
-	app.post('/user/sendmail', isAuthenticated, function(req, res) {
-    ses.sendEmail(
-      {
-        Source: 'yeepi.dev@gmail.com',
-        Destination: { ToAddresses: [req.param('sendto')] },
-        Message: {
-          Subject: {
-            Data: req.param('subject')
-          },
-          Body: {
-            Text: {
-              Data: req.param('text')
-            }
-          }
-        }
-      }
-      , function(err, data) {
-        if(err) throw err;
-        console.log('Email sent:');
-        console.log(data);
-      });
-    res.send({"result":true});
-	});
-
 	app.post('/user/signupverify', function(req, res) {
 
-		var code = stringGen(6);
-
-		ses.sendEmail(
-			{
-				Source: 'yeepi.dev@gmail.com',
-				Destination: { ToAddresses: [req.param('email')] },
-				Message: {
-					Subject: {
-						Data: 'Signup Email Verification'
-					},
-					Body: {
-						Text: {
-							Data: code
-						}
-					}
-				}
-			}
-			, function(err, data) {
-				if(err) throw err;
-				console.log('Email sent:');
-				console.log(data);
-			});
-		res.send({"result": true, "code": code});
+		// var code = stringGen(6);
+    //
+		// ses.sendEmail(
+		// 	{
+		// 		Source: 'yeepi.dev@gmail.com',
+		// 		Destination: { ToAddresses: [req.param('email')] },
+		// 		Message: {
+		// 			Subject: {
+		// 				Data: 'Signup Email Verification'
+		// 			},
+		// 			Body: {
+		// 				Text: {
+		// 					Data: code
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// 	, function(err, data) {
+		// 		if(err) throw err;
+		// 		console.log('Email sent:');
+		// 		console.log(data);
+		// 	});
+		// res.send({"result": true, "code": code});
+    res.send({"result": true, "code": " code"})
 	});
 	
 	app.post('/user/signup/validate/username', function (req, res) {
@@ -199,7 +176,7 @@ module.exports = function(app, passport){
     if (req.param('signupstep') == 2) {
       frontendUser.signupStep = 2;
     }
-    
+    frontendUser.existstripe = req.param('existstripe');
     frontendUser.userstatus = "Active";
     frontendUser.registeredOn = getRegisteredOn();
     frontendUser.profilecomplete = "Incompleted";
@@ -286,6 +263,8 @@ module.exports = function(app, passport){
 		var id = req.param('id');
 		var userStatus = req.param('userStatus');
 		var policecheck = req.param('policecheck');
+    var min_amount = req.param('min_amount');
+    var max_amount = req.param('max_amount');
 		FrontEndUser.findById(id,function(err, user){
 			if (err){
 			  console.log('Error in Saving users: '+err);  
@@ -293,6 +272,8 @@ module.exports = function(app, passport){
 			}
 			user.userstatus = userStatus;
 			user.policecheck = policecheck;
+      user.min_amount = min_amount;
+      user.max_amount = max_amount;
 			user.save(function(err) {
 				if (err) {
 					res.send({"result":"error"});
@@ -354,6 +335,16 @@ module.exports = function(app, passport){
       	res.send({"result": false, "text": "There is no email you entered."})
 			} else {
         if (users[0].password === pass) {
+  
+          var history = new FrontEndUserLoginHistory();
+          history.loginDate = getRegisteredOn();
+          history.loginIp = req.param('loginIp');
+          history.username = users[0].username;
+          history.save(function(err) {
+            if (err) {
+              console.info(err);
+            }
+          });
           res.send({ "result": true, "token": users[0].token, "signupStep": users[0].signupStep, "userstatus": users[0].userstatus, "imagePreviewUrl": users[0].imagePreviewUrl })
 				} else {
           res.send({"result": false, "text": "Password is incorrect, please try again."})
@@ -516,33 +507,6 @@ module.exports = function(app, passport){
     
   });
   
-  
-  app.post('/frontend/user/uploadfiletest', function(req, res) {
-  
-    if (!req.param('file')) {
-      return res.send({
-        success: false
-      });
-    } else {
-      return res.send({
-        success: true
-      })
-    }
-    
-    // FrontEndUser.find({token: req.param('token')}, function(err, users) {
-    //   if (err) {
-    //     res.send({"result": false})
-    //   }
-    //   if (users.length === 0) {
-    //     res.send({"result":false, "text": "no data"});
-    //   } else {
-    //     const file = req.param('file');
-    //     res.send({"result":true, "filesize": file.size, "filesize1": 0});
-    //   }
-    // });
-  });
-  
-	
   app.post('/frontend/user/sendforgotreq', function(req, res) {
     FrontEndUser.find({email: req.param('email').toLowerCase()}, function(err, users) {
       if (err){
@@ -582,6 +546,7 @@ module.exports = function(app, passport){
       users[0].businessname = req.param('_input_businessname');
       users[0].gstTax = req.param('_input_gstTax');
       users[0].pstTax = req.param('_input_pstTax');
+      users[0].existstripe = req.param('existstripe');
       users[0].signupStep = 2;
       users[0].save(function(err) {
         if (err) {

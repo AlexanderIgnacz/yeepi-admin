@@ -42,6 +42,7 @@ var feUserModel = function () {
     bankname: String,
     imagePreviewUrl: String,
     portfolio: Array,
+    existstripe: Boolean,
   
     institution: String,
     bankaddr: String,
