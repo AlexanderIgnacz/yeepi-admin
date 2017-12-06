@@ -46,6 +46,15 @@ module.exports = function(app, passport){
   app.get('/frontend/transportation',isAuthenticated, function(req, res) {
     res.render('template/frontend/transportation', {});
   });
+  app.get('/frontend/spokenlanguage',isAuthenticated, function(req, res) {
+    res.render('template/frontend/language', {});
+  });
+  app.get('/frontend/service',isAuthenticated, function(req, res) {
+    res.render('template/frontend/service', {});
+  });
+  app.get('/frontend/settings',isAuthenticated, function(req, res) {
+    res.render('template/frontend/settings', {});
+  });
 	app.get('/category',isAuthenticated, function(req, res) {
 	   res.render('template/category', {});
 	});

@@ -40,6 +40,17 @@ module.exports = function(app, passport){
     );
   });
   
+  app.post('/frontend/trans/list', function(req, res) {
+    Trans.find({},
+      function(err, trans) {
+        if (err) {
+          res.send({ "result": false });
+        }
+        res.send({ "result": true, "trans": trans });
+      }
+    );
+  });
+  
   app.post('/trans/remove', isAuthenticated, function(req, res) {
     Trans.findByIdAndRemove(req.param('id'), function(err){
       if (err){
@@ -49,6 +60,19 @@ module.exports = function(app, passport){
     });
   });
   
+  app.post('/trans/update', function(req, res) {
+    Trans.findById(req.param('id'), function(err, trans){
+      if (err) {
+        res.send({"result": false, "text": err});
+      }
+      trans.vehiclename = req.param('vehiclename');
+      trans.status = req.param('status');
+      trans.preview_img = req.param('preview_img');
+      trans.save(function(err) {
+        res.send({"result":true});
+      });
+    });
+  });
 };
 
 
@@ -56,4 +80,4 @@ var isAuthenticated = function (req, res, next) {
   if (req.isAuthenticated())
     return next();
   res.redirect('/login');
-}
+};

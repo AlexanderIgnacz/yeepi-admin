@@ -1,0 +1,316 @@
+<%layout('../../layout')%>
+<div id="page-wrapper">
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Settings</h1>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Basic Settings
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Minimum Amount</label>
+                                    <input class="form-control" id="min_amount_input"/>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>Maximum Amount</label>
+                                    <input class="form-control" id="max_amount_input"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>Offer Limit</label>
+                                    <input class="form-control" id="offer_limit_input"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Commission
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Commission Rate</label>
+                                    <input class="form-control" id="commission_input">
+                                    </input>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Stripe Infos
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Token</label>
+                                    <input class="form-control" id="stripe_token_input"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Tax Infos
+                    <button type="button" class="btn btn-success btn-xs pull-right" id="createNewUserModalBtn">Add New Tax</button>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form">
+                                <div class="form-group">
+                                    <div class="dataTable_wrapper" id="historytablecontainer" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                            <div class="form-group">
+                                <button class="btn btn-lg btn-primary btn-block" id="updateBtn">
+                                    Update
+                                </button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="col-lg-6">
+        <!-- Modal -->
+        <div class="modal fade" id="userCreateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Add New Tax</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label>Province</label>
+                                        <input class="form-control" id="addTaxProvince">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label>Tax Name</label>
+                                        <input class="form-control" id="addTaxName">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <input class="form-control" id="addTaxDescription">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label>Percentage</label>
+                                        <input class="form-control" id="addTaxPercentage">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="createModalUserCreateBtn">Create</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>
+
+
+
+</div>
+
+<script src="/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+      getTaxArray();
+
+      $("#createNewUserModalBtn").click(function() {
+        $('#addTaxProvince').val('');
+        $('#addTaxName').val('');
+        $('#addTaxDescription').val('');
+        $('#addTaxPercentage').val('');
+        $('#userCreateModal').modal('show');
+      });
+
+      $("#createModalUserCreateBtn").click(function() {
+
+        var str1 = $('#addTaxProvince').val();
+        var str2 = $('#addTaxName').val();
+        var str3 = $('#addTaxDescription').val();
+        var str4 = $('#addTaxPercentage').val();
+
+        $.post('/settings/addtax', { str1: str1, str2: str2, str3: str3, str4: str4 }, function (result) {
+          if (!result.result) {
+            alert(result.text);
+          } else {
+            getTaxArray();
+            $('#userCreateModal').modal('hide');
+          }
+        });
+      });
+
+
+      $("#updateBtn").click(function() {
+
+        var str1 = $("#min_amount_input").val();
+        var str2 = $("#max_amount_input").val();
+        var str3 = $("#commission_input").val();
+        var str4 = $("#stripe_token_input").val();
+        var str5 = $("#offer_limit_input").val();
+
+        $.post('/settings/update4', { str1: str1, str2: str2, str3: str3, str4: str4, str5: str5 }, function(result) {
+          if (result.result === "error") {
+            alert("error");
+          } else {
+            location.href="/frontend/users";
+          }
+        });
+
+      });
+
+    });
+
+
+
+    function getTaxArray() {
+      $.get('/settings/list', {}, function (result) {
+        if (!result.result) {
+          alert(result.text);
+        } else {
+
+          $("#min_amount_input").val(result.settings[0].min_amount);
+          $("#max_amount_input").val(result.settings[0].max_amount);
+          $("#stripe_token_input").val(result.settings[0].stripe_token);
+          $("#commission_input").val(result.settings[0].commission);
+          $("#offer_limit_input").val(result.settings[0].offerlimit);
+
+          var tb = $('#historytablecontainer');
+          var div_data = "<table class=\"table table-striped table-bordered table-hover\" id=\"dataTables-example\"><thead><tr><th>Province</th><th>Tax Name</th><th>Description</th><th>Percentage</th><th>Action</th></tr></thead><tbody>";
+          $.each(result.settings[0].tax_array, function(index, data){
+            var province = data.province;
+            var tax_name = data.tax_name;
+            var description = data.description;
+            var percentage = data.percentage;
+            div_data+="<tr class='gradeA'><td>"+province+"</td><td>"+tax_name+"</td><td>"+description+"</td><td>"+percentage+"</td><td><button type='button' class='btn btn-danger btn-circle' onclick='removeHistory(\""+tax_name+"\")'><i class='fa fa-times'></i></button></td></tr>";
+          })
+          div_data += "</tbody></table>";
+          tb.html(div_data);
+          $('table').dataTable({
+            responsive: true
+          });
+        }
+      });
+    }
+
+    function removeHistory(tax_name) {
+      if (confirm('Are you sure you want to remove this tax?')) {
+        $.post('/settings/removetax', {tax_name: tax_name}, function (result) {
+          getTaxArray();
+        });
+      }
+    }
+
+
+</script>
