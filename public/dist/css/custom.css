@@ -1,0 +1,7 @@
+.transportationimg:hover {
+    cursor: pointer;
+}
+
+#myFile {
+    visibility: hidden;
+}

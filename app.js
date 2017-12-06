@@ -40,6 +40,7 @@ require('./routes/stafflogin')(app, passport);
 require('./routes/fe_auth')(app, passport);
 require('./routes/task_auth')(app, passport);
 require('./routes/stripe')(app, passport);
+require('./routes/trans')(app, passport);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
