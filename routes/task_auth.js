@@ -29,6 +29,17 @@ module.exports = function(app, passport){
     task.task_budget = req.param('task_budget');
     task.task_numberoftasker = req.param('task_numberoftasker');
     task.task_attachments = req.param('task_attachments');
+  
+    task.task_from_location = req.param('task_from_location');
+    task.task_from_location_zip = req.param('task_from_location_zip');
+    task.task_from_location_lat = req.param('task_from_location_lat');
+    task.task_from_location_lng = req.param('task_from_location_lng');
+    
+    task.task_to_location = req.param('task_to_location');
+    task.task_to_location_zip = req.param('task_to_location_zip');
+    task.task_to_location_lat = req.param('task_to_location_lat');
+    task.task_to_location_lng = req.param('task_to_location_lng');
+  
     
     task.save(function(err) {
       if (err) {
@@ -67,6 +78,17 @@ module.exports = function(app, passport){
       task.task_budget = req.param('task_budget');
       task.task_numberoftasker = req.param('task_numberoftasker');
       task.task_attachments = req.param('task_attachments');
+  
+      task.task_from_location = req.param('task_from_location');
+      task.task_from_location_zip = req.param('task_from_location_zip');
+      task.task_from_location_lat = req.param('task_from_location_lat');
+      task.task_from_location_lng = req.param('task_from_location_lng');
+  
+      task.task_to_location = req.param('task_to_location');
+      task.task_to_location_zip = req.param('task_to_location_zip');
+      task.task_to_location_lat = req.param('task_to_location_lat');
+      task.task_to_location_lng = req.param('task_to_location_lng');
+      
       task.save(function(err) {
         if (err) {
           console.info(err);

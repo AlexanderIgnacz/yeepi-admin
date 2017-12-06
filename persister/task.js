@@ -16,7 +16,18 @@ var taskModel = function () {
     task_deadline_delta: 0,
     task_budget: 0,
     task_numberoftasker: 0,
-    task_attachments: Array
+    task_attachments: Array,
+  
+    task_from_location: String,
+    task_from_location_zip: String,
+    task_from_location_lat: Number,
+    task_from_location_lng: Number,
+  
+    task_to_location: String,
+    task_to_location_zip: String,
+    task_to_location_lat: Number,
+    task_to_location_lng: Number
+    
   });
   
   return mongoose.model('task', taskSchema);
