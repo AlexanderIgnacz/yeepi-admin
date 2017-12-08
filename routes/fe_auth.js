@@ -123,7 +123,34 @@ module.exports = function(app, passport){
 		// 		console.log(data);
 		// 	});
 		// res.send({"result": true, "code": code});
-    res.send({"result": true, "code": " code"})
+    
+    var code = stringGen(6);
+    
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'yeepi.dev@gmail.com',
+        pass: 'Montreal_01'
+      }
+    });
+    
+    var mailOptions = {
+      from: 'yeepi.dev@gmail.com',
+      to: 'alex.ignacz412@gmail.com',
+      subject: 'Yeepi Signup Verification Code',
+      text: code
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+        // res.send({ "result": false, "text": error })
+      } else {
+        // res.send({ "result": true, "code": code })
+      }
+    });
+    
+    res.send({"result": true, "code": code})
 	});
 	
 	app.post('/user/signup/validate/username', function (req, res) {

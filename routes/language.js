@@ -73,6 +73,16 @@ module.exports = function(app, passport){
       });
     });
   });
+  
+  app.get('/langs/list/count',isAuthenticated, function(req, res) {
+    Langs.find({},
+      function(err, users) {
+        if (err)
+          return done(err);
+        res.send({count: users.length});
+      }
+    );
+  });
 };
 
 

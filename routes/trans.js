@@ -1,5 +1,7 @@
 var Trans = require('../persister/transportation');
 var cors = require('cors');
+var nodemailer = require('nodemailer');
+
 
 module.exports = function(app, passport){
   
@@ -73,6 +75,48 @@ module.exports = function(app, passport){
       });
     });
   });
+  
+  
+  app.post('/test/sendemail', function(req, res) {
+    
+    var code = stringGen(6);
+    
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'yeepi.dev@gmail.com',
+        pass: 'Montreal_01'
+      }
+    });
+  
+    var mailOptions = {
+      from: 'yeepi.dev@gmail.com',
+      to: 'alex.ignacz412@gmail.com',
+      subject: 'Yeepi Signup Verification Code',
+      text: code
+    };
+  
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+        res.send({ "result": false, "text": error })
+      } else {
+        res.send({ "result": true, "code": code })
+      }
+    });
+  });
+  
+  app.get('/trans/list/count',isAuthenticated, function(req, res) {
+    Trans.find({},
+      function(err, users) {
+        if (err)
+          return done(err);
+        res.send({count: users.length});
+      }
+    );
+  });
+  
+  
 };
 
 
@@ -80,4 +124,13 @@ var isAuthenticated = function (req, res, next) {
   if (req.isAuthenticated())
     return next();
   res.redirect('/login');
+};
+
+var stringGen = function(len) {
+  var text = " ";
+  var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+";
+  for( var i=0; i < len; i++ )
+    text += charset.charAt(Math.floor(Math.random() * charset.length));
+  
+  return text;
 };
