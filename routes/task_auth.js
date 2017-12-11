@@ -17,6 +17,7 @@ module.exports = function(app, passport){
     
     task.token = token;
     task.user_token = req.param('user_token');
+    task.user_avatar = req.param('user_avatar');
     task.task_category = req.param('task_category');
     task.task_title = req.param('task_title');
     task.task_description = req.param('task_description');
@@ -24,12 +25,13 @@ module.exports = function(app, passport){
     task.task_location = req.param('task_location');
     task.task_location_lat = req.param('task_location_lat');
     task.task_location_lng = req.param('task_location_lng');
-    task.task_start_daydelta = req.param('task_start_daydelta');
-    task.task_deadline_delta = req.param('task_deadline_delta');
     task.task_budget = req.param('task_budget');
     task.task_numberoftasker = req.param('task_numberoftasker');
     task.task_attachments = req.param('task_attachments');
-  
+    task.task_deadline = req.param('task_deadline');
+    task.task_postline = req.param('task_postline');
+    task.task_updateline = req.param('task_updateline');
+    
     task.task_from_location = req.param('task_from_location');
     task.task_from_location_zip = req.param('task_from_location_zip');
     task.task_from_location_lat = req.param('task_from_location_lat');
@@ -73,11 +75,11 @@ module.exports = function(app, passport){
       task.task_location = req.param('task_location');
       task.task_location_lat = req.param('task_location_lat');
       task.task_location_lng = req.param('task_location_lng');
-      task.task_start_daydelta = req.param('task_start_daydelta');
-      task.task_deadline_delta = req.param('task_deadline_delta');
       task.task_budget = req.param('task_budget');
       task.task_numberoftasker = req.param('task_numberoftasker');
       task.task_attachments = req.param('task_attachments');
+      task.task_deadline = req.param('task_deadline');
+      task.task_updateline = req.param('task_updateline');
   
       task.task_from_location = req.param('task_from_location');
       task.task_from_location_zip = req.param('task_from_location_zip');
@@ -97,6 +99,17 @@ module.exports = function(app, passport){
       });
     });
   });
+  
+  app.post('/tasks/fetchtasks', function(req, res) {
+    Task.find({}, function(err, users) {
+      if (err){
+        res.send({"result":false, "text": err});
+      }
+      res.send({"result":true, "tasks_datas":users});
+    });
+  });
+  
+  
   
 };
 

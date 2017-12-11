@@ -260,13 +260,24 @@
         var str4 = $("#stripe_token_input").val();
         var str5 = $("#offer_limit_input").val();
 
-        $.post('/settings/update4', { str1: str1, str2: str2, str3: str3, str4: str4, str5: str5 }, function(result) {
-          if (result.result === "error") {
-            alert("error");
-          } else {
-            location.href="/frontend/users";
-          }
-        });
+        if (!isNormalInteger(str1)) {
+          alert('Minimum Amount is not number, please input again.')
+        } else if (!isNormalInteger(str2)) {
+          alert('Maximum Amount is not number, please input again.')
+        } else if (!isNormalInteger(str5)) {
+          alert('Offer limit is not number, please input again.')
+        } else if (!isNormalInteger(str3)) {
+          alert('Commission Rate is not number, please input again.')
+        } else {
+          $.post('/settings/update4', { str1: str1, str2: str2, str3: str3, str4: str4, str5: str5 }, function(result) {
+            if (result.result === "error") {
+              alert("error");
+            } else {
+              location.href="/frontend/users";
+            }
+          });
+        }
+
 
       });
 
@@ -312,5 +323,9 @@
       }
     }
 
+    function isNormalInteger(str) {
+      var n = Math.floor(Number(str));
+      return String(n) === str && n >= 0;
+    }
 
 </script>

@@ -136,7 +136,7 @@ module.exports = function(app, passport){
     
     var mailOptions = {
       from: 'yeepi.dev@gmail.com',
-      to: 'alex.ignacz412@gmail.com',
+      to: req.param('email'),
       subject: 'Yeepi Signup Verification Code',
       text: code
     };

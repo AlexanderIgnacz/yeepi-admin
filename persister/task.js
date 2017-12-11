@@ -1,10 +1,12 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 var taskModel = function () {
   
   var taskSchema = mongoose.Schema({
     token: String,
     user_token: String,
+    user_avatar: String,
     task_category: 0,
     task_title: String,
     task_description: String,
@@ -12,11 +14,12 @@ var taskModel = function () {
     task_location: String,
     task_location_lat: 0,
     task_location_lng: 0,
-    task_start_daydelta: 0,
-    task_deadline_delta: 0,
     task_budget: 0,
     task_numberoftasker: 0,
     task_attachments: Array,
+    task_deadline: String,
+    task_postline: String,
+    task_updateline: String,
   
     task_from_location: String,
     task_from_location_zip: String,

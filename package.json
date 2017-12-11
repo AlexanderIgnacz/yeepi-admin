@@ -21,6 +21,7 @@
     "express": "~4.12.2",
     "express-session": "*",
     "mailgun-js": "^0.13.1",
+    "moment": "^2.19.4",
     "mongoose": "*",
     "morgan": "~1.5.1",
     "node-twilio-verify": "^1.0.0",

@@ -3,11 +3,11 @@ var mongoose = require('mongoose');
 var settingsModel = function () {
   
   var settingsSchema = mongoose.Schema({
-    min_amount: Number,
-    max_amount: Number,
+    min_amount: String,
+    max_amount: String,
     stripe_token: String,
     commission: String,
-    offerlimit: Number,
+    offerlimit: String,
     tax_array: Array
   });
   
