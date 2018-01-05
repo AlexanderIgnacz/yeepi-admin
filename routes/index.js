@@ -43,6 +43,9 @@ module.exports = function(app, passport){
   app.get('/frontend/users',isAuthenticated, function(req, res) {
     res.render('template/frontend/users', {});
   });
+  app.get('/frontend/tasks',isAuthenticated, function(req, res) {
+    res.render('template/frontend/tasks', {});
+  });
   app.get('/frontend/transportation',isAuthenticated, function(req, res) {
     res.render('template/frontend/transportation', {});
   });

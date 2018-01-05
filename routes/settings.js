@@ -51,13 +51,16 @@ module.exports = function(app, passport){
       if (err) {
         res.send({"result": false, "text": err});
       }
-      
-      settings[0].tax_array.push({
+
+      var tax_array = settings[0].tax_array;
+      tax_array.push({
         province: req.param('str1'),
         tax_name: req.param('str2'),
         description: req.param('str3'),
         percentage: req.param('str4')
       });
+      settings[0].tax_array = tax_array;
+
       settings[0].save(function(err) {
         if (err) {
           res.send({"result":false, "text": err});

@@ -44,6 +44,7 @@ require('./routes/trans')(app, passport);
 require('./routes/language')(app, passport);
 require('./routes/service')(app, passport);
 require('./routes/settings')(app, passport);
+require('./routes/msglink_auth')(app, passport);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

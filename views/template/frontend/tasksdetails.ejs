@@ -1,0 +1,289 @@
+<%layout('../../layout')%>
+<div id="page-wrapper">
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Tasks Detail</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Task Basic Infos
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+
+                        <!--Left Side-->
+                        <div class="col-lg-6">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Task Title</label>
+                                    <label class="form-control" id="tasktitle">
+                                    </label>
+                                </div>
+                            </form>
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Service Type</label>
+                                    <label class="form-control" id="servicetype">
+                                    </label>
+                                </div>
+                            </form>
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Post Date</label>
+                                    <label class="form-control" id="postdate">
+                                    </label>
+                                </div>
+                            </form>
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Poster Name</label>
+                                    <label class="form-control" id="postername">
+                                    </label>
+                                </div>
+                            </form>
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>State</label>
+                                    <label class="form-control" id="state">
+                                    </label>
+                                </div>
+                            </form>
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Number of offers</label>
+                                    <label class="form-control" id="offercount">
+                                    </label>
+                                </div>
+                            </form>
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Task Category</label>
+                                    <label class="form-control" id="taskcategory">
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--Right Side-->
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>Estimated Budget</label>
+                                    <label class="form-control" id="estimatedbudget">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <label class="form-control" id="city">
+                                    </label>
+                                </div>
+                            </div>
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Due Date</label>
+                                    <label class="form-control" id="duedate">
+                                    </label>
+                                </div>
+                            </form>
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Tasker Name</label>
+                                    <label class="form-control" id="taskername">
+                                    </label>
+                                </div>
+                            </form>
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <label class="form-control" id="status">
+                                    </label>
+                                </div>
+                            </form>
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Address of the task</label>
+                                    <label class="form-control" id="addr">
+                                    </label>
+                                </div>
+                            </form>
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>Number of taskers needed</label>
+                                    <label class="form-control" id="taskercount">
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <button class="btn btn-lg btn-primary btn-block" id="updateBtn">
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script>
+  var local_detailid = "";
+  $(document).ready(function() {
+    getTaskDetails();
+    $("#updateBtn").click(function() {
+
+      // var userStatus = $("#userstatus").val();
+      // var policecheck = $("#policecheck").val();
+      // var min_amount = $("#min_amount").val();
+      // var max_amount = $("#max_amount").val();
+      //
+      // $.post('/frontend/user/update', { id: local_detailid, userStatus: userStatus, policecheck: policecheck, min_amount: min_amount, max_amount: max_amount }, function(result) {
+      //   if (result.result == "error") {
+      //     alert("error");
+      //   } else {
+      //     location.href="/frontend/users";
+      //   }
+      // });
+
+    });
+  });
+
+  function getTaskDetails() {
+    $.get("/frontend/tasks/detailid/get", {}, function(result1) {
+      local_detailid = result1;
+      $.post("/frontend/tasks/detailbyid/gets", {id:result1}, function(result2) {
+        if (result2.result === "error") {
+          alert("error");
+        } else {
+          // debugger;
+          displayUserDetails(result2.result);
+        }
+      });
+    });
+  }
+  function displayUserDetails(data) {
+    $("#tasktitle").text(data.task_title);
+    $("#estimatedbudget").text(data.task_budget);
+
+    var task_category = "";
+    switch (data.task_category) {
+      case 1:
+        task_category = "House Cleaning";
+        break;
+      case 2:
+        task_category = "Assembly Services";
+        break;
+      case 3:
+        task_category = "Handyman";
+        break;
+      case 4:
+        task_category = "Delivery";
+        break;
+      case 5:
+        task_category = "Gardening";
+        break;
+      case 6:
+        task_category = "Admin & IT Support";
+        break;
+      case 7:
+        task_category = "Beauty & Care";
+        break;
+      case 8:
+        task_category = "Photography";
+        break;
+      case 9:
+        task_category = "Decoration";
+        break;
+      case 10:
+        task_category = "Other Services";
+        break;
+      default:
+        task_category = "";
+        break;
+    }
+    $("#servicetype").text(task_category);
+    $("#city").text(data.task_location_city);
+    $("#postdate").text(data.task_postline);
+    $("#duedate").text(data.task_deadline);
+    $("#postername").text("");
+    $("#taskername").text("");
+
+
+    var state = data.task_state === 1 ? "Posted" : data.task_state === 2 ? "Assigned" : "Completed";
+    var status = data.task_status === 1 ? "Active" : data.task_status === 2 ? "Closed" : data.task_status === 3 ? "SPAM" : data.task_status === 4 ? "Cancelled" : "Expired";
+
+    $("#state").text(state);
+    $("#status").text(status);
+    $("#offercount").text(data.offercount);
+    $("#addr").text(data.task_location);
+    $("#taskcategory").text("");
+    $("#taskercount").text(data.task_numberoftasker);
+
+
+    // $("#username").val(data.username);
+    // $("#useremail").val(data.email);
+    // $("#usertype").val(data.usertype);
+    // $("#userstatus").val(data.userstatus);
+    // $("#usersignupdate").text(data.registeredOn);
+    // $("#usersignupip").text(data.signupIp);
+    // $("#profilecompletion").text(data.profilecomplete);
+    // $("#isverified").text(data.isverified);
+    // $("#aboutme").text(data.aboutme);
+    // $("#address").text(data.address);
+    // $("#postalcode").text(data.postalcode);
+    // $("#phonenumber").text(data.phonenumber);
+    // if (data.policecheck) {
+    //   $("#policecheck").val("Yes");
+    // } else {
+    //   $("#policecheck").val("No");
+    // }
+    // if (data.existstripe) {
+    //   $("#stripeaccount").val("Yes");
+    //
+    // } else {
+    //   $("#stripeaccount").val("No");
+    // }
+    // $("#rbqlicence").text(data.rbqLicenceNumber);
+    // $("#pst_taxid").text(data.pstTax);
+    // $("#gst_taxid").text(data.gstTax);
+    //
+    // $("#stripeaccountstatus").val(data.ifStripeActive);
+    // $("#verifications").val(data.verificationType);
+    // $("#document").val(data.documentType);
+    // $("#stripecategory").val(data.usercategory);
+    // $("#postedjobcount").text(data.numberofJob);
+    // $("#completedjobcount").text(data.numberofComplete);
+    // $("#ratingcount").text(data.numberofRating);
+    // $("#reviewcount").text(data.numberofReviews);
+    // $("#rating").text(data.rating);
+    // $("#user_photo_src").attr('src',data.imagePreviewUrl);
+    // $("#min_amount").val(data.min_amount);
+    // $("#max_amount").val(data.max_amount);
+  }
+</script>

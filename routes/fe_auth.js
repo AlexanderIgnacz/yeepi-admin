@@ -257,7 +257,7 @@ module.exports = function(app, passport){
       if (err) {
         console.info(err);
       }
-      res.send({"result":true, "token": token});
+      res.send({"result":true, "token": token, "email": req.param('email').toLowerCase(), "username": req.param('username') });
     });
 	});
 
@@ -372,7 +372,7 @@ module.exports = function(app, passport){
               console.info(err);
             }
           });
-          res.send({ "result": true, "token": users[0].token, "signupStep": users[0].signupStep, "userstatus": users[0].userstatus, "imagePreviewUrl": users[0].imagePreviewUrl })
+          res.send({ "result": true, "token": users[0].token, "signupStep": users[0].signupStep, "userstatus": users[0].userstatus, "imagePreviewUrl": users[0].imagePreviewUrl, "email": email.toLowerCase(), "username": history.username })
 				} else {
           res.send({"result": false, "text": "Password is incorrect, please try again."})
 				}
@@ -599,6 +599,14 @@ module.exports = function(app, passport){
     });
   });
   
+  app.post('/frontend/user/getlanguage', function(req, res) {
+    FrontEndUser.find({token: req.param('token')}, function(err, users) {
+      if (err){
+        res.send({"result":false, "text": err});
+      }
+      res.send({"result":true, "language": users[0].language});
+    });
+  });
   
 };
 

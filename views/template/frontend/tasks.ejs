@@ -1,0 +1,220 @@
+<%layout('../../layout')%>
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Tasks</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    DataTables Advanced Tasks
+                    <select class="selectpicker pull-right" id="userTableFilter">
+                        <option>All</option>
+                        <option>Poster</option>
+                        <option>Tasker</option>
+                        <option>Both</option>
+                    </select>
+                    <div class="pull-right" style="margin-right: 5px;">
+                        Filter
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="dataTable_wrapper" id="historytablecontainer" />
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+
+        <div class="col-lg-6">
+            <!-- Modal -->
+            <div class="modal fade" id="historyViewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">View User Details</h4>
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+        </div>
+
+        <div class="col-lg-6">
+            <!-- Modal -->
+            <div class="modal fade" id="sendMessageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Type your messages</h4>
+                        </div>
+                        <div class="modal-body">
+                            <select class="form-control" id="typeMessageSelector">
+                                <option>Type manually</option>
+                                <option>Sample 1</option>
+                                <option>Sample 2</option>
+                                <option>Sample 3</option>
+                                <option>Sample 4</option>
+                                <option>Sample 5</option>
+                            </select>
+                            <br/>
+                            <textarea class="form-control" rows="5" id="messageTextArea"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="sendMessageBtn">Send Message</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+        </div>
+    </div>
+</div>
+
+<script src="/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script>
+    var sendEmailTarget = "";
+    $(document).ready(function() {
+        $("#userTableFilter").val("All");
+        $("#userTableFilter").on('change', function() {
+            getList();
+        })
+        $.get("/samplemessages/get", {}, function(result) {
+            $("#typeMessageSelector").on('change', function() {
+                switch (this.value) {
+                    case "Type manually":
+                        $("#messageTextArea").val("");
+                        break;
+                    case "Sample 1":
+                        $("#messageTextArea").val(result.sample1);
+                        break;
+                    case "Sample 2":
+                        $("#messageTextArea").val(result.sample2);
+                        break;
+                    case "Sample 3":
+                        $("#messageTextArea").val(result.sample3);
+                        break;
+                    case "Sample 4":
+                        $("#messageTextArea").val(result.sample4);
+                        break;
+                    case "Sample 5":
+                        $("#messageTextArea").val(result.sample5);
+                        break;
+                    default:
+                        $("#messageTextArea").val("");
+                        break;
+                }
+
+            })
+        });
+        $("#sendMessageBtn").click(function() {
+            $.post("/user/sendmail", {
+                'sendto': sendEmailTarget,
+                'subject': 'Yeepi Support Team',
+                'text': $("#messageTextArea").val()
+            }, function(result) {
+            });
+            $('#sendMessageModal').modal("hide");
+        });
+        getList();
+    });
+
+    function getList() {
+        $.get("/frontend/tasks/list"
+          ,{}
+          ,function(result){
+            var tb = $('#historytablecontainer');
+            var div_data = "<table class=\"table table-striped table-bordered table-hover\" id=\"dataTables-example\"><thead><tr><th>Task Title</th><th>Estimated Budget</th><th>Service Type</th><th>City</th><th>Post Date</th><th>Poster Name</th><th>Tasker Name</th><th>State</th>><th>Status</th><th>Due date time</th><th>Number of offers</th><th>Action</th></tr></thead><tbody>";
+            $.each(result,function(index, data){
+                var task_title = data.task_title;
+                var task_budget = data.task_budget;
+                var task_category = "";
+                switch (data.task_category) {
+                  case 1:
+                    task_category = "House Cleaning";
+                    break;
+                  case 2:
+                    task_category = "Assembly Services";
+                    break;
+                  case 3:
+                    task_category = "Handyman";
+                    break;
+                  case 4:
+                    task_category = "Delivery";
+                    break;
+                  case 5:
+                    task_category = "Gardening";
+                    break;
+                  case 6:
+                    task_category = "Admin & IT Support";
+                    break;
+                  case 7:
+                    task_category = "Beauty & Care";
+                    break;
+                  case 8:
+                    task_category = "Photography";
+                    break;
+                  case 9:
+                    task_category = "Decoration";
+                    break;
+                  case 10:
+                    task_category = "Other Services";
+                    break;
+                  default:
+                    task_category = "";
+                    break;
+                }
+
+                var task_city = data.task_location_city;
+                var post_date = data.task_postline;
+                var poster_name = "Alexander Ignacz";
+                var tasker_name = "";
+                var state = data.task_state === 1 ? "Posted" : data.task_state === 2 ? "Assigned" : "Completed";
+                var status = data.task_status === 1 ? "Active" : data.task_status === 2 ? "Closed" : data.task_status === 3 ? "SPAM" : data.task_status === 4 ? "Cancelled" : "Expired";
+                var due_date_time = data.task_deadline;
+                var offer = data.offercount;
+                var id = data._id;
+
+                div_data+="<tr class=\"gradeA\"><td>"+task_title+"</td><td>"+task_budget+"</td><td>"+task_category+"</td><td>"+task_city+"</td><td class=\"center\">"+post_date+"</td><td class=\"center\">"+poster_name+"</td><td class=\"center\">"+tasker_name+"</td><td class=\"center\">"+state+"</td><td class='center'>"+status+"</td><td class='center'>"+due_date_time+"</td><td class='center'>"+offer+"</td><td><button type='button' class='btn btn-danger btn-circle' onclick='removeHistory(\""+id+"\")'><i class='fa fa-times'></i></button>&nbsp<button type='button' class='btn btn-info btn-circle' onclick='viewUser(\""+id+"\")'><i class='fa fa-eye'></i></button></td></tr>";
+            })
+            div_data += "</tbody></table>";
+            tb.html(div_data);
+            $('table').dataTable({
+                responsive: true,
+            });
+          })
+    }
+
+    function removeHistory(id) {
+      if (confirm('Are you sure you want to remove this user?')) {
+        $.post("/frontend/user/delete", {id:id}, function(result) {
+          getList();
+        });
+      }
+    }
+
+    function viewUser(id) {
+        $.post("/frontend/tasks/detailid/set", {id:id}, function(result) {
+            location.href="/frontend/tasks/detail";
+        });
+    }
+
+</script>
