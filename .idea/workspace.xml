@@ -2,19 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4371a204-b394-4ebb-841a-d631b12a5fd8" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/persister/messagelink.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/routes/msglink_auth.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/views/template/frontend/tasksdetails.ejs" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change beforePath="$PROJECT_DIR$/persister/global.js" afterPath="$PROJECT_DIR$/persister/global.js" />
       <change beforePath="$PROJECT_DIR$/persister/task.js" afterPath="$PROJECT_DIR$/persister/task.js" />
-      <change beforePath="$PROJECT_DIR$/routes/fe_auth.js" afterPath="$PROJECT_DIR$/routes/fe_auth.js" />
-      <change beforePath="$PROJECT_DIR$/routes/index.js" afterPath="$PROJECT_DIR$/routes/index.js" />
-      <change beforePath="$PROJECT_DIR$/routes/settings.js" afterPath="$PROJECT_DIR$/routes/settings.js" />
       <change beforePath="$PROJECT_DIR$/routes/task_auth.js" afterPath="$PROJECT_DIR$/routes/task_auth.js" />
-      <change beforePath="$PROJECT_DIR$/views/left.ejs" afterPath="$PROJECT_DIR$/views/left.ejs" />
-      <change beforePath="$PROJECT_DIR$/views/template/index.ejs" afterPath="$PROJECT_DIR$/views/template/index.ejs" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -31,28 +21,28 @@
       <file leaf-file-name="task_auth.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/task_auth.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2955">
-              <caret line="197" column="35" lean-forward="false" selection-start-line="197" selection-start-column="35" selection-end-line="197" selection-end-column="35" />
+            <state relative-caret-position="229">
+              <caret line="21" column="53" lean-forward="false" selection-start-line="21" selection-start-column="38" selection-end-line="21" selection-end-column="53" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="messagelink.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/persister/messagelink.js">
+      <file leaf-file-name="task.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/persister/task.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="18" lean-forward="false" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="24" />
+            <state relative-caret-position="435">
+              <caret line="29" column="35" lean-forward="true" selection-start-line="29" selection-start-column="35" selection-end-line="29" selection-end-column="35" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="msglink_auth.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="msglink_auth.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/msglink_auth.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="507">
-              <caret line="115" column="21" lean-forward="false" selection-start-line="115" selection-start-column="21" selection-end-line="115" selection-end-column="21" />
+            <state relative-caret-position="387">
+              <caret line="107" column="29" lean-forward="true" selection-start-line="107" selection-start-column="29" selection-end-line="107" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -139,8 +129,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>/create</find>
-      <find>numb</find>
       <find>task state</find>
       <find>task stat</find>
       <find>state</find>
@@ -169,6 +157,8 @@
       <find>settings/retrieveinfos</find>
       <find>onclickl</find>
       <find>frontend/messagelinks/fetchMessageLinks</find>
+      <find>user_postername`</find>
+      <find>user_postername</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -205,13 +195,13 @@
         <option value="$PROJECT_DIR$/persister/global.js" />
         <option value="$PROJECT_DIR$/views/template/frontend/tasksdetails.ejs" />
         <option value="$PROJECT_DIR$/views/template/frontend/tasks.ejs" />
-        <option value="$PROJECT_DIR$/persister/task.js" />
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/persister/messagelink.js" />
         <option value="$PROJECT_DIR$/routes/fe_auth.js" />
         <option value="$PROJECT_DIR$/routes/settings.js" />
-        <option value="$PROJECT_DIR$/routes/task_auth.js" />
         <option value="$PROJECT_DIR$/routes/msglink_auth.js" />
+        <option value="$PROJECT_DIR$/routes/task_auth.js" />
+        <option value="$PROJECT_DIR$/persister/task.js" />
       </list>
     </option>
   </component>
@@ -249,6 +239,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -282,7 +273,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -376,15 +366,17 @@
       <workItem from="1515037990636" duration="3010000" />
       <workItem from="1515056906763" duration="30000" />
       <workItem from="1515057228788" duration="7451000" />
-      <workItem from="1515128810189" duration="2814000" />
+      <workItem from="1515128810189" duration="3413000" />
+      <workItem from="1515210065077" duration="1521000" />
+      <workItem from="1515383387297" duration="2392000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="303918000" />
+    <option name="totallyTimeSpent" value="308430000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1920" height="975" extended-state="6" />
+    <frame x="0" y="23" width="1920" height="977" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1569247" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -395,7 +387,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23068182" sideWeight="0.4980695" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23015873" sideWeight="0.4980695" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -679,13 +671,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/persister/task.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="42" column="14" lean-forward="false" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/routes/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -697,14 +682,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="46" column="30" lean-forward="false" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/language.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="51" column="5" lean-forward="false" selection-start-line="42" selection-start-column="2" selection-end-line="51" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -756,14 +733,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/task_auth.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2955">
-          <caret line="197" column="35" lean-forward="false" selection-start-line="197" selection-start-column="35" selection-end-line="197" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/routes/fe_auth.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3000">
@@ -772,10 +741,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/routes/language.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="51" column="5" lean-forward="false" selection-start-line="42" selection-start-column="2" selection-end-line="51" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/routes/msglink_auth.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="507">
-          <caret line="115" column="21" lean-forward="false" selection-start-line="115" selection-start-column="21" selection-end-line="115" selection-end-column="21" />
+        <state relative-caret-position="387">
+          <caret line="107" column="29" lean-forward="true" selection-start-line="107" selection-start-column="29" selection-end-line="107" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/task_auth.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="21" column="53" lean-forward="false" selection-start-line="21" selection-start-column="38" selection-end-line="21" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persister/task.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" column="35" lean-forward="true" selection-start-line="29" selection-start-column="35" selection-end-line="29" selection-end-column="35" />
           <folding />
         </state>
       </provider>

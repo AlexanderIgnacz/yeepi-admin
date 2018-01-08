@@ -8,6 +8,7 @@ var taskModel = function () {
     user_token: String,
     user_avatar: String,
     user_postername: String,
+    user_posteremail: String,
     task_category: 0,
     task_title: String,
     task_description: String,

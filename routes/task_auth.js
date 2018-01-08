@@ -20,7 +20,7 @@ module.exports = function(app, passport){
     task.user_token = req.param('user_token');
     task.user_avatar = req.param('user_avatar');
     task.user_postername = req.param('user_postername');
-    
+    task.user_posteremail = req.param('user_posteremail');
     task.task_category = req.param('task_category');
     task.task_title = req.param('task_title');
     task.task_description = req.param('task_description');
